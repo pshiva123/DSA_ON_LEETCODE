@@ -1,17 +1,26 @@
 class Solution:
-    def search(self, nums: List[int], target: int) -> bool:
-        nums.sort()
-        print(nums)
-        i=0
-        j=len(nums)-1
-        while(i<=j):
-            print(i,j)
-            mid=(i+j)//2
-            if nums[mid]==target:
+    def search(self, arr: List[int], target: int) -> int:
+        low=0
+        high=len(arr)-1
+        while(low<=high):
+            mid=(low+high)//2
+            if arr[mid]==target:
                 return True
-            elif nums[mid]>target:
-                j=mid-1
+            if arr[mid]==arr[high]==arr[low]:
+                low+=1
+                high-=1
+                continue
+            if arr[low]<=arr[mid]:
+                if arr[low]<=target<arr[mid]:
+                    high=mid-1
+                else:
+                    low=mid+1
             else:
-                i=mid+1
+                if arr[mid]<target<=arr[high]:
+                    low=mid+1
+                else:
+                    high=mid-1
         return False
+
+                    
         
