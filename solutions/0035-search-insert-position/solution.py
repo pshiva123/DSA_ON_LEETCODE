@@ -6,8 +6,7 @@ class Solution:
         while(low<=high):
             mid=(low+high)//2
             if arr[mid]==target:
-                idx=mid-1
-                break
+                return mid
             elif arr[mid]<target:
                 idx=mid
                 low=mid+1
