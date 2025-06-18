@@ -1,63 +1,77 @@
-from bisect import bisect_left
-
 class Solution:
-    def minimumDifference(self, nums: list[int]) -> int:
-        """
-        Partition nums (length = 2n) into two groups of size n to minimize
-        |sum(group1) - sum(group2)|.
-        """
+    def minimumDifference(self, nums: List[int]) -> int:
+        totalsum=sum(nums)
+        total=len(nums)
+        n=total//2
+        a1=nums[:n]
+        a2=nums[n:]
+        left=[[] for i in range(n+1)]
+        right=[[] for i in range(n+1)]
+        f(a1,left)
+        f(a2,right)
+        mini=float('inf')
+        for i in range(n+1):
+            right[i].sort()
+        for i in range(n+1):
+            l1=left[i]
+            l2=right[n-i]
+            for k in l1:
+                low=0
+                high=len(l2)-1
+                find=(totalsum//2)-k
+                floor1=findfloor(l2,find)
+                ceil1=findceil(l2,find)
+                if 0<=floor1<len(l2):
+                    mini=min(mini,abs(totalsum-2*(k+l2[floor1])))
+                if 0<=ceil1<len(l2):
+                    mini=min(mini,abs(totalsum-2*(k+l2[floor1])))
+        return mini
 
-        n = len(nums) // 2
-        total = sum(nums)
-        half = total // 2
 
-        # Generate all (subset-size → list of subset-sums) for one half
-        def gen_sums(arr):
-            m = len(arr)
-            sums = [[] for _ in range(m+1)]
-            # iterate all bitmasks of arr
-            for mask in range(1 << m):
-                s = 0
-                cnt = 0
-                for i in range(m):
-                    if mask & (1 << i):
-                        s += arr[i]
-                        cnt += 1
-                sums[cnt].append(s)
-            return sums
+def findfloor(arr,k):
+    low=0
+    high=len(arr)-1
+    while(low<=high):
+        mid=(low+high)//2
+        if arr[mid]==k:
+            return mid
+        elif arr[mid]<k:
+            low=mid+1
+        else:
+            high=mid-1
+    return high
 
-        left, right = nums[:n], nums[n:]
-        left_sums  = gen_sums(left)
-        right_sums = gen_sums(right)
+def findceil(arr,k):
+    low=0
+    high=len(arr)-1
+    while(low<=high):
+        mid=(low+high)//2
+        if arr[mid]==k:
+            return mid
+        elif arr[mid]<k:
+            low=mid+1
+        else:
+            high=mid-1
+    return low if low<len(arr) else -1
 
-        # sort each list in right_sums for binary search
-        for lst in right_sums:
-            lst.sort()
+    
 
-        best = float('inf')
+def f(arr,li):
+    n=len(arr)
+    for i in range(2**n):
+        s=0
+        sz=0
+        idx=0
+        while(i>0):
+            if i&1:
+                s+=arr[idx]
+                sz+=1
+            idx+=1
+            i=i>>1
+        li[sz].append(s)
+    return li
 
-        # For each possible size k taken from left half,
-        # we take (n-k) from right. We want s_left + s_right
-        # as close as possible to half = total//2
-        for k in range(n+1):
-            A = left_sums[k]
-            B = right_sums[n-k]
-            B.sort()
-            for s in A:
-                # target is half - s
-                tgt = half - s
-                # find in B closest to tgt
-                i = bisect_left(B, tgt)
-                # check B[i]
-                if i < len(B):
-                    cur = abs((s + B[i]) * 2 - total)
-                    if cur < best:
-                        best = cur
-                # check B[i-1]
-                if i > 0:
-                    cur = abs((s + B[i-1]) * 2 - total)
-                    if cur < best:
-                        best = cur
 
-        return best
+
+
 
