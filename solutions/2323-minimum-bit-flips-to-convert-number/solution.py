@@ -1,11 +1,11 @@
 class Solution:
     def minBitFlips(self, start: int, goal: int) -> int:
-        s=bin(start)[2:].zfill(32)
-        g=bin(goal)[2:].zfill(32)
-        c=0
+        cnt=0
         for i in range(32):
-            if s[i]!=g[i]:
-                c+=1
-        return c
-            
+            a=start>>i
+            b=goal>>i
+            if a&1 != b&1:
+                cnt+=1
+        return cnt
+
         
