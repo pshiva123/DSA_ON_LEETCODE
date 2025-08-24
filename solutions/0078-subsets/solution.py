@@ -1,16 +1,12 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        def sub(nums,idx,n,li,temp):
-            if idx==n:
-                temp.append(li.copy())
-                return
-            li.append(nums[idx])
-            sub(nums,idx+1,n,li,temp)
-            li.pop()
-            sub(nums,idx+1,n,li,temp)
-        temp=[]
-        li=[]
-        sub(nums,0,len(nums),li,temp)
-        return temp
-
-        
+        arr=[]
+        cur=[]
+        f(nums,0,cur,arr)
+        return arr
+def f(nums,idx,cur,arr):
+    if idx==len(nums):
+        arr.append(cur)
+        return 
+    f(nums,idx+1,cur+[nums[idx]],arr)
+    f(nums,idx+1,cur,arr)
