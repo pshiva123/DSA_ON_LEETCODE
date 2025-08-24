@@ -1,25 +1,24 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        st=""
-        lngst=""
-        i=0
-        while(i<len(s)):
-            if s[i] not in st:
-                st=st+s[i]
-                #print(st)
+        if s=="":
+            return 0
+        d={}
+        maxi=1
+        idx=-1
+        for i in range(len(s)):
+            if s[i] in d:
+                maxi=max(i-1-idx,maxi)
+                temp=d[s[i]]
+                for j in range(idx+1,temp+1):
+                    del d[s[j]]
+
+                idx=temp
+                d[s[i]]=i
             else:
-                #print("entered into else")
-                if(len(st)>len(lngst)):
-                    lngst=st
-                m=st.index(s[i])
-                st=st[m+1:]
-                st=st+s[i]
-                #print(st)
-            i+=1
-        if(len(st)>len(lngst)):
-            lngst=st
-        return len(lngst)
-
-
-
+                d[s[i]]=i
+        return max(len(d),maxi)
+        
+            
+            
+                
         
