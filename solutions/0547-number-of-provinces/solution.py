@@ -1,18 +1,21 @@
 
-def dfs(graph,i,vis):
-    vis[i]=True
-    for node in range(len(graph[i])):
-        if graph[i][node]==1 and vis[node]==False:
-            dfs(graph,node,vis)
-
+def dfs(node,graph,vis):
+    for i in range(len(graph)):
+        if graph[node][i]==1 and vis[i]==False:
+            vis[i]=True
+            dfs(i,graph,vis)
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        c=0
+        cnt=0
         n=len(isConnected)
         vis=[False]*(n)
         for i in range(n):
-            if vis[i]==False:
-                dfs(isConnected,i,vis)
-                c+=1
-        return c
+            if vis[i] is False:
+                cnt+=1
+                vis[i]=True
+                dfs(i,isConnected,vis)
+        return cnt
+            
+
+        
         
