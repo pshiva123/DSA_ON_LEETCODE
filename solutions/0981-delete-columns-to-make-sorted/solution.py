@@ -1,13 +1,13 @@
 class Solution:
     def minDeletionSize(self, strs: List[str]) -> int:
-        c=0
-        for i in range(len(strs[0])):
-            ll=0
-            for j in range(len(strs)-1):
-                if(strs[j][i]>strs[j+1][i]):
-                    ll+=1
-            if(ll>0):
-                c+=1
-        return c                
+        cnt=0
+        n=len(strs)
+        cols=set()
+        for i in range(n-1):
+            for j in range(len(strs[i])):
+                if strs[i][j]>strs[i+1][j]:
+                    if j not in cols:
+                        cols.add(j)
+        return len(cols)
 
-        
+
