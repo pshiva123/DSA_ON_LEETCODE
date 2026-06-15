@@ -10,7 +10,6 @@ class Solution:
         slow=head
         fast=head.next.next if head.next else None
         while fast and fast.next:
-            prev=slow
             fast=fast.next.next
             slow=slow.next
         slow.next=slow.next.next
