@@ -1,0 +1,19 @@
+name: Sync Leetcode
+
+on:
+  workflow_dispatch: # Allows you to trigger the manual sync button
+  schedule:
+    - cron: '0 0 * * *' # Automatically runs every day at midnight
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync Code
+        uses: joshcai/leetcode-sync@v1.7.0 # Authoritative open-source synchronization script
+        with:
+          leetcode-csrf-token: ${{ secrets::LEETCODE_CSRF_TOKEN }}
+          leetcode-session: ${{ secrets::LEETCODE_SESSION }}
+          destination-folder: 'solutions' # Stores files inside a folder named solutions
+          verbose: true
